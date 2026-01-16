@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TRUSTSETU • Digital Trust Layer</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/ui.css" />
+
+  <script>
+    // Tailwind dark mode config
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+
+<body class="h-full bg-slate-50 text-slate-900 dark:bg-[#05060a] dark:text-slate-100 transition-colors">
+  <!-- Top Glow BG -->
+  <div class="pointer-events-none fixed inset-0 overflow-hidden">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full blur-3xl opacity-50 bg-gradient-to-tr from-indigo-600 via-fuchsia-500 to-emerald-400 dark:opacity-30"></div>
+    <div class="absolute bottom-[-350px] right-[-350px] w-[700px] h-[700px] rounded-full blur-3xl opacity-30 bg-gradient-to-tr from-cyan-400 via-indigo-500 to-purple-600 dark:opacity-20"></div>
+  </div>
+
+  <!-- Container -->
+  <div class="relative max-w-7xl mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/60 dark:bg-white/10 border border-black/5 dark:border-white/10 backdrop-blur">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="text-sm font-semibold tracking-wide">TRUSTSETU LIVE</span>
+          <span class="text-xs text-slate-500 dark:text-slate-300">AI Trust Layer</span>
+        </div>
+
+        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
+          TRUSTSETU
+          <span class="block text-lg md:text-xl font-semibold text-slate-600 dark:text-slate-300 mt-2">
+            Verify once. Transact safely everywhere.
+          </span>
+        </h1>
+
+        <p class="mt-3 max-w-2xl text-slate-600 dark:text-slate-300">
+          ScamShield + TrustBadge + SafeEarn — built for Digital Trust, Inclusion and Economic Empowerment.
+        </p>
+      </div>
+
+      <!-- Theme Toggle -->
+      <div class="flex items-center gap-2">
+        <button id="themeBtn" class="px-4 py-2 rounded-xl bg-white/70 dark:bg-white/10 border border-black/10 dark:border-white/10 backdrop-blur hover:scale-[1.02] active:scale-[0.98] transition">
+          <span id="themeIcon">🌙</span>
+          <span class="ml-2 font-semibold">Theme</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+
+      <!-- LEFT: Input Panel -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- ScamShield -->
+        <div class="card">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 class="text-2xl font-bold">🛡️ ScamShield</h2>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                Real-time scam risk scoring + explainable warnings (Hindi/English)
+              </p>
+            </div>
+
+            <div class="badge-pill">
+              <span class="dot"></span>
+              <span class="text-sm font-semibold">Risk Engine</span>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="label">Suspicious Message / Call Text</label>
+              <textarea id="scamText" class="input h-28" placeholder="Example: urgent bank account blocked click link now..."></textarea>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="label">Phone Number (optional)</label>
+                <input id="phoneNumber" class="input" placeholder="9876543210"/>
+              </div>
+
+              <div>
+                <label class="label">Language</label>
+                <select id="lang" class="input">
+                  <option value="en">English</option>
+                  <option value="hi">Hindi</option>
+                </select>
+              </div>
+
+              <button id="btnScamCheck" class="btn-primary w-full">
+                Check Scam Risk ⚡
+              </button>
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div class="mt-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">Risk Meter</p>
+                <p id="warningText" class="text-sm text-slate-600 dark:text-slate-300 mt-1">Waiting for analysis…</p>
+              </div>
+              <div class="text-right">
+                <p class="text-xs text-slate-500 dark:text-slate-400">Final Risk</p>
+                <p id="riskValue" class="text-2xl font-extrabold">--%</p>
+              </div>
+            </div>
+
+            <div class="mt-3 h-3 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
+              <div id="riskBar" class="h-full w-[0%] bg-gradient-to-r from-emerald-400 via-yellow-400 to-red-500 transition-all duration-700"></div>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="mini-card">
+                <p class="mini-title">Base Probability</p>
+                <p id="baseProb" class="mini-value">--</p>
+              </div>
+              <div class="mini-card">
+                <p class="mini-title">Extra Report Risk</p>
+                <p id="extraProb" class="mini-value">--</p>
+              </div>
+              <div class="mini-card">
+                <p class="mini-title">Suggested Action</p>
+                <p id="suggestedAction" class="mini-value">--</p>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <pre id="rawResult" class="codebox">{"status":"ready"}</pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Report -->
+        <div class="card">
+          <h2 class="text-2xl font-bold">🚨 Report a Number</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            Crowd-powered reputation layer (adds risk weight automatically)
+          </p>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="label">Phone Number</label>
+              <input id="reportNumber" class="input" placeholder="9876543210"/>
+            </div>
+            <div class="md:col-span-2">
+              <label class="label">Reason</label>
+              <input id="reportReason" class="input" placeholder="Fake bank customer care call / OTP scam / cashback fraud"/>
+            </div>
+          </div>
+
+          <button id="btnReport" class="btn-secondary mt-4">
+            Submit Report ✅
+          </button>
+
+          <pre id="reportResult" class="codebox mt-4">{"report":"waiting"}</pre>
+        </div>
+
+        <!-- TrustBadge -->
+        <div class="card">
+          <h2 class="text-2xl font-bold">🏅 TrustBadge Generator</h2>
+          <p class="text-sm text-slate-600 dark:text-slate-300">
+            Proof-based verification → Bronze / Silver / Gold
+          </p>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="label">SIM Age (months)</label>
+              <input id="simAge" class="input" type="number" value="12"/>
+            </div>
+            <div>
+              <label class="label">Bank Age (months)</label>
+              <input id="bankAge" class="input" type="number" value="18"/>
+            </div>
+            <div class="flex items-center gap-3 mt-7 md:mt-0">
+              <input id="digilocker" type="checkbox" class="scale-125 accent-indigo-500" />
+              <label for="digilocker" class="text-sm font-semibold">DigiLocker Verified</label>
+            </div>
+          </div>
+
+          <button id="btnBadge" class="btn-primary mt-4">
+            Generate TrustBadge ✨
+          </button>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mini-card">
+              <p class="mini-title">Trust Score</p>
+              <p id="trustScore" class="mini-value">--</p>
+            </div>
+            <div class="mini-card">
+              <p class="mini-title">Badge</p>
+              <p id="trustBadge" class="mini-value">--</p>
+            </div>
+          </div>
+
+          <pre id="badgeResult" class="codebox mt-4">{"badge":"waiting"}</pre>
+        </div>
+      </div>
+
+      <!-- RIGHT: Vision Panel -->
+      <div class="space-y-6">
+        <div class="card">
+          <h3 class="text-xl font-bold">⚡ TRUSTSETU Vision</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            TRUSTSETU is not “just an app”. It is a scalable trust layer connecting Telecom + UPI + Platforms,
+            making Digital India safer, inclusive, and economically empowering.
+          </p>
+
+          <div class="mt-4 space-y-3">
+            <div class="mini-card">
+              <p class="mini-title">Digital Trust</p>
+              <p class="mini-value">Transparency • Safety • Credibility</p>
+            </div>
+            <div class="mini-card">
+              <p class="mini-title">Access & Inclusion</p>
+              <p class="mini-value">Voice-first • Local language • Assisted</p>
+            </div>
+            <div class="mini-card">
+              <p class="mini-title">Economic Empowerment</p>
+              <p class="mini-value">Verified merchants • Fair participation</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="text-xl font-bold">🏆 Demo Script (For Judges)</h3>
+          <ol class="mt-3 list-decimal pl-5 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+            <li>Paste a scam message → click <b>Check Scam Risk</b></li>
+            <li>Report the number → increases risk next time</li>
+            <li>Generate TrustBadge → show verified levels</li>
+            <li>Explain: infrastructure layer across ecosystem</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3 class="text-xl font-bold">🔮 Next-Level Add-ons</h3>
+          <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+            <li>✅ Verified Caller TrustSeal (Bank/Gov/Telecom)</li>
+            <li>✅ Heatmap dashboard (reported numbers by area)</li>
+            <li>✅ ONDC merchant trust integration</li>
+            <li>✅ Fraud Recovery SLA model</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-10 text-center text-xs text-slate-500 dark:text-slate-400">
+      Built for PROMETEO • IIT Jodhpur • TRUSTSETU Prototype
+    </div>
+  </div>
+
+  <script src="/static/ui.js"></script>
+</body>
+</html>
