@@ -70,4 +70,4 @@ TRUSTSETU includes a modern glassmorphism UI with:
 
 ### 1) Install dependencies
 ```bash
-pip install fastapi uvicorn pandas scikit-learn joblib jinja2
+pip install -r requirements.txt
