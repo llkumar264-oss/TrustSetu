@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -12,7 +12,13 @@ from trust_engine import trust_badge
 MODEL_PATH = "scam_model.joblib"
 REPORTS_PATH = "db/reports.json"
 
-app = FastAPI(title="TRUSTSETU Prototype", version="2.1")
+# ✅ Force docs enabled (Render fix)
+app = FastAPI(
+    title="TRUSTSETU Prototype",
+    version="2.1",
+    docs_url="/docs",
+    redoc_url=None
+)
 
 # ------------------------
 # UI Setup (Templates + Static)
@@ -90,13 +96,17 @@ def action_suggestion(prob: float):
 # ------------------------
 @app.get("/")
 def home():
-    return {"message": "✅ TRUSTSETU API running", "ui": "/ui", "docs": "/docs"}
+    return {
+        "message": "✅ TRUSTSETU API running",
+        "ui": "/ui",
+        "docs": "/docs"
+    }
 
 
-# ✅ Fix: favicon 404 not found
+# ✅ Fix favicon 404
 @app.get("/favicon.ico")
 def favicon():
-    return {}
+    return JSONResponse(content={})
 
 
 @app.get("/ui", response_class=HTMLResponse)
